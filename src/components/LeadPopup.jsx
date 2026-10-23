@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from 'react'
 import { IconArrowLeft, IconArrowUpRight, IconCheck, IconShield, IconWhatsApp, IconX } from './Icons'
 import { waLink } from '../config'
-import { INVESTIMENTOS, leadMessage, maskPhone, validName, validPhone } from '../lead'
+import { INVESTIMENTOS, leadMessage, maskPhone, sendLead, validName, validPhone } from '../lead'
 
 // Pop-up de entrada: o mesmo diagnóstico da página, uma pergunta por vez (1 → 2 → 3 → 4).
 const STEPS = [
@@ -48,6 +48,9 @@ export default function LeadPopup() {
   const [step, setStep] = useState(0)
   const [data, setData] = useState({ nome: '', whats: '', empresa: '', investimento: '' })
   const [erro, setErro] = useState('')
+  const [sending, setSending] = useState(false)
+  // 'auto' = salvo na planilha do Jonh; 'manual' = plano B, o cliente envia pelo WhatsApp dele
+  const [sent, setSent] = useState(null)
   const inputRef = useRef(null)
   const dialogRef = useRef(null)
   const touched = useRef(false)
@@ -88,19 +91,24 @@ export default function LeadPopup() {
 
   const done = step >= STEPS.length
   const cur = STEPS[step]
+  const firstName = data.nome.trim().split(' ')[0]
 
   const setValue = (v) => {
     setErro('')
     setData((d) => ({ ...d, [cur.key]: cur.key === 'whats' ? maskPhone(v) : v }))
   }
 
-  const next = (e) => {
+  const next = async (e) => {
     e?.preventDefault()
+    if (sending) return
     touched.current = true
     if (!cur.valid(data[cur.key])) return setErro(cur.err)
     setErro('')
     if (step < STEPS.length - 1) return setStep(step + 1)
-    window.open(waLink(leadMessage(data)), '_blank', 'noopener')
+    setSending(true)
+    const ok = await sendLead({ ...data, origem: 'Pop-up' })
+    setSending(false)
+    setSent(ok ? 'auto' : 'manual')
     setStep(STEPS.length)
   }
 
@@ -138,11 +146,25 @@ export default function LeadPopup() {
             <span className="lp-done-ico" aria-hidden="true">
               <IconWhatsApp size={30} />
             </span>
-            <h3>Pronto, {data.nome.trim().split(' ')[0]}!</h3>
-            <p>Abrimos o WhatsApp com as suas respostas. É só enviar a mensagem que eu te respondo para agendarmos o seu diagnóstico.</p>
-            <a className="cta-btn cta-primary lp-main" href={waLink(leadMessage(data))} target="_blank" rel="noopener noreferrer">
+            {sent === 'auto' ? (
+              <>
+                <h3>Recebido, {firstName}!</h3>
+                <p>Suas respostas chegaram para mim. Em breve eu te chamo no WhatsApp para agendarmos o seu diagnóstico.</p>
+              </>
+            ) : (
+              <>
+                <h3>Falta só um passo, {firstName}!</h3>
+                <p>Toque no botão abaixo para enviar suas respostas pelo WhatsApp e agendarmos o seu diagnóstico.</p>
+              </>
+            )}
+            <a
+              className={`cta-btn cta-primary lp-main ${sent === 'auto' ? 'lp-main--ghost' : ''}`}
+              href={waLink(leadMessage(data))}
+              target="_blank"
+              rel="noopener noreferrer"
+            >
               <span className="cta-fill" aria-hidden="true" />
-              <span className="cta-label">Abrir o WhatsApp de novo</span>
+              <span className="cta-label">{sent === 'auto' ? 'Falar comigo agora no WhatsApp' : 'Enviar pelo WhatsApp'}</span>
               <span className="cta-chip" aria-hidden="true">
                 <IconWhatsApp size={18} />
               </span>
@@ -201,9 +223,11 @@ export default function LeadPopup() {
                   <IconArrowLeft />
                 </button>
               )}
-              <button type="submit" className="cta-btn cta-primary lp-main">
+              <button type="submit" className="cta-btn cta-primary lp-main" disabled={sending} aria-busy={sending}>
                 <span className="cta-fill" aria-hidden="true" />
-                <span className="cta-label">{step < STEPS.length - 1 ? 'Continuar' : 'Quero meu diagnóstico'}</span>
+                <span className="cta-label">
+                  {step < STEPS.length - 1 ? 'Continuar' : sending ? 'Enviando...' : 'Quero meu diagnóstico'}
+                </span>
                 <span className="cta-chip" aria-hidden="true">
                   {step < STEPS.length - 1 ? <IconArrowUpRight /> : <IconWhatsApp size={18} />}
                 </span>

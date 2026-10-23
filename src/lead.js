@@ -20,7 +20,32 @@ export const maskPhone = (v) => {
 export const validName = (v) => v.trim().length >= 2
 export const validPhone = (v) => v.replace(/\D/g, '').length >= 10
 
-export const leadMessage = ({ nome, whats, empresa, investimento }) =>
+// Salva o lead na planilha do Google (Apps Script em google-apps-script/Code.gs).
+// O Apps Script não libera CORS: o envio vai como "no-cors" + text/plain (sem preflight) e a
+// resposta não pode ser lida — se a requisição saiu sem erro de rede, consideramos enviado.
+// Retorna false se a planilha não estiver configurada ou a rede falhar: aí o site cai no plano B
+// (o cliente envia as respostas pelo WhatsApp dele).
+export async function sendLead(data) {
+  if (!SITE.planilha) return false
+  const ctrl = new AbortController()
+  const timer = setTimeout(() => ctrl.abort(), 9000)
+  try {
+    await fetch(SITE.planilha, {
+      method: 'POST',
+      mode: 'no-cors',
+      headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+      body: JSON.stringify(data),
+      signal: ctrl.signal,
+    })
+    return true
+  } catch {
+    return false
+  } finally {
+    clearTimeout(timer)
+  }
+}
+
+export const leadMessage =({ nome, whats, empresa, investimento }) =>
   [
     `Olá, ${SITE.nome}! Quero receber meu diagnóstico de tráfego pago.`,
     '',

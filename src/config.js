@@ -7,6 +7,8 @@ export const SITE = {
   whatsapp: '558594399609',
   // TODO: @ do Instagram sem o "@" (deixe vazio para esconder)
   instagram: '',
+  // Apps Script da planilha de contatos (google-apps-script/Code.gs). Vazio = o cliente envia pelo WhatsApp.
+  planilha: 'https://script.google.com/macros/s/AKfycby93jWCJ0ICQoM4USHb1PLTmbHMEWcl4Mec9Q7JFpQn_yA0_D5iXmawfXv9Muq6jvVW/exec',
   mensagemPadrao: 'Olá, Jonh! Quero saber mais sobre a gestão de tráfego para a minha empresa.',
 }
 
