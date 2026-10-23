@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from 'react'
 import { IconArrowLeft, IconArrowUpRight, IconCheck, IconShield, IconWhatsApp, IconX } from './Icons'
 import { waLink } from '../config'
-import { INVESTIMENTOS, leadMessage, maskPhone, sendLead, validName, validPhone } from '../lead'
+import { INVESTIMENTOS, goToThanks, leadMessage, maskPhone, sendLead, validName, validPhone } from '../lead'
 
 // Pop-up de entrada: o mesmo diagnóstico da página, uma pergunta por vez (1 → 2 → 3 → 4).
 const STEPS = [
@@ -49,8 +49,6 @@ export default function LeadPopup() {
   const [data, setData] = useState({ nome: '', whats: '', empresa: '', investimento: '' })
   const [erro, setErro] = useState('')
   const [sending, setSending] = useState(false)
-  // 'auto' = salvo na planilha do Jonh; 'manual' = plano B, o cliente envia pelo WhatsApp dele
-  const [sent, setSent] = useState(null)
   const inputRef = useRef(null)
   const dialogRef = useRef(null)
   const touched = useRef(false)
@@ -107,8 +105,9 @@ export default function LeadPopup() {
     if (step < STEPS.length - 1) return setStep(step + 1)
     setSending(true)
     const ok = await sendLead({ ...data, origem: 'Pop-up' })
+    // salvou: página de obrigado. Não salvou: plano B, o cliente envia pelo WhatsApp dele
+    if (ok) return goToThanks(data.nome)
     setSending(false)
-    setSent(ok ? 'auto' : 'manual')
     setStep(STEPS.length)
   }
 
@@ -146,25 +145,11 @@ export default function LeadPopup() {
             <span className="lp-done-ico" aria-hidden="true">
               <IconWhatsApp size={30} />
             </span>
-            {sent === 'auto' ? (
-              <>
-                <h3>Recebido, {firstName}!</h3>
-                <p>Suas respostas chegaram para mim. Em breve eu te chamo no WhatsApp para agendarmos o seu diagnóstico.</p>
-              </>
-            ) : (
-              <>
-                <h3>Falta só um passo, {firstName}!</h3>
-                <p>Toque no botão abaixo para enviar suas respostas pelo WhatsApp e agendarmos o seu diagnóstico.</p>
-              </>
-            )}
-            <a
-              className={`cta-btn cta-primary lp-main ${sent === 'auto' ? 'lp-main--ghost' : ''}`}
-              href={waLink(leadMessage(data))}
-              target="_blank"
-              rel="noopener noreferrer"
-            >
+            <h3>Falta só um passo, {firstName}!</h3>
+            <p>Toque no botão abaixo para enviar suas respostas pelo WhatsApp e agendarmos o seu diagnóstico.</p>
+            <a className="cta-btn cta-primary lp-main" href={waLink(leadMessage(data))} target="_blank" rel="noopener noreferrer">
               <span className="cta-fill" aria-hidden="true" />
-              <span className="cta-label">{sent === 'auto' ? 'Falar comigo agora no WhatsApp' : 'Enviar pelo WhatsApp'}</span>
+              <span className="cta-label">Enviar pelo WhatsApp</span>
               <span className="cta-chip" aria-hidden="true">
                 <IconWhatsApp size={18} />
               </span>

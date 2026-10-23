@@ -28,6 +28,10 @@ Quando o cliente termina o pop-up ou o formulário, os dados viram uma linha num
 
 A aba "Contatos" e o cabeçalho são criados sozinhos no primeiro contato.
 
+## Página de obrigado
+
+Depois que o contato é salvo, o cliente vai para `/obrigado/` (arquivo `obrigado/index.html`, componente `src/components/Obrigado.jsx`). Como ela só abre depois de um envio com sucesso, é o lugar do código de conversão do Pixel da Meta, Google Ads ou GTM: cole no `<head>` de `obrigado/index.html`, onde está o comentário.
+
 ## Onde editar
 
 - `src/config.js`: nome, cargo, número de WhatsApp, Instagram e endereço da planilha de contatos (o site inteiro usa esses dados).

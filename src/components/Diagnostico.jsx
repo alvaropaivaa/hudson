@@ -1,13 +1,13 @@
 import { useState } from 'react'
 import { IconForm, IconShield, IconWhatsApp } from './Icons'
 import { waLink } from '../config'
-import { INVESTIMENTOS, leadMessage, maskPhone, sendLead, validName, validPhone } from '../lead'
+import { INVESTIMENTOS, goToThanks, leadMessage, maskPhone, sendLead, validName, validPhone } from '../lead'
 
 export default function Diagnostico() {
   const [form, setForm] = useState({ nome: '', whats: '', empresa: '', investimento: '' })
   const [erro, setErro] = useState({})
   const [sending, setSending] = useState(false)
-  const [sent, setSent] = useState(null) // 'auto' = salvo na planilha do Jonh; 'manual' = cliente envia
+  const [fallback, setFallback] = useState(false) // a planilha não respondeu: o cliente envia pelo WhatsApp
   const set = (k) => (e) => setForm((f) => ({ ...f, [k]: k === 'whats' ? maskPhone(e.target.value) : e.target.value }))
 
   const enviar = async (e) => {
@@ -21,8 +21,9 @@ export default function Diagnostico() {
     setSending(true)
     // "site" é um campo invisível: só robô preenche (o servidor descarta)
     const ok = await sendLead({ ...form, origem: 'Formulário', site: e.currentTarget?.site?.value || '' })
+    if (ok) return goToThanks(form.nome)
     setSending(false)
-    setSent(ok ? 'auto' : 'manual')
+    setFallback(true)
   }
 
   return (
@@ -65,25 +66,16 @@ export default function Diagnostico() {
             <span className="diag-tag">Diagnóstico gratuito</span>
             <p>Leva menos de um minuto.</p>
           </div>
-          {sent ? (
+          {fallback ? (
             <div className="diag-done" role="status">
               <span className="lp-done-ico" aria-hidden="true">
                 <IconWhatsApp size={28} />
               </span>
-              <h3>{sent === 'auto' ? `Recebido, ${form.nome.trim().split(' ')[0]}!` : 'Falta só um passo!'}</h3>
-              <p>
-                {sent === 'auto'
-                  ? 'Suas respostas chegaram para mim. Em breve eu te chamo no WhatsApp para agendarmos o seu diagnóstico.'
-                  : 'Toque no botão abaixo para enviar suas respostas pelo WhatsApp e agendarmos o seu diagnóstico.'}
-              </p>
-              <a
-                className={`cta-btn cta-primary diag-submit ${sent === 'auto' ? 'lp-main--ghost' : ''}`}
-                href={waLink(leadMessage(form))}
-                target="_blank"
-                rel="noopener noreferrer"
-              >
+              <h3>Falta só um passo!</h3>
+              <p>Toque no botão abaixo para enviar suas respostas pelo WhatsApp e agendarmos o seu diagnóstico.</p>
+              <a className="cta-btn cta-primary diag-submit" href={waLink(leadMessage(form))} target="_blank" rel="noopener noreferrer">
                 <span className="cta-fill" aria-hidden="true" />
-                <span className="cta-label">{sent === 'auto' ? 'Falar comigo agora no WhatsApp' : 'Enviar pelo WhatsApp'}</span>
+                <span className="cta-label">Enviar pelo WhatsApp</span>
                 <span className="cta-chip" aria-hidden="true">
                   <IconWhatsApp size={18} />
                 </span>
