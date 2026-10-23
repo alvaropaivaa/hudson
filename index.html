@@ -1,0 +1,41 @@
+<!doctype html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <title>Jonh | Gestor de Tráfego &amp; Estrategista Digital</title>
+    <meta name="description" content="Gestor de Tráfego e Estrategista Digital. +R$ 100 mil gerenciados em tráfego pago. Marketing, performance e escala de negócios: atraia mais clientes e venda mais com anúncios estratégicos." />
+    <meta name="theme-color" content="#00020f" />
+    <meta name="robots" content="index,follow,max-image-preview:large" />
+    <meta property="og:type" content="website" />
+    <meta property="og:locale" content="pt_BR" />
+    <meta property="og:title" content="Jonh | Gestor de Tráfego &amp; Estrategista Digital" />
+    <meta property="og:description" content="+R$ 100 mil gerenciados em tráfego pago. Marketing, performance e escala de negócios." />
+    <meta property="og:image" content="assets/og-image.jpg" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <link rel="icon" type="image/png" href="assets/favicon.png" />
+    <link rel="apple-touch-icon" href="assets/apple-touch-icon.png" />
+    <link rel="preload" as="font" type="font/ttf" href="assets/fonts/product-sans.ttf" crossorigin />
+    <link rel="preload" as="image" href="assets/hero-mobile.webp" media="(max-width: 640px)" />
+    <link rel="preload" as="image" imagesrcset="assets/hero-pc-1440.webp 1440w, assets/hero-pc.webp 1920w" imagesizes="100vw" media="(min-width: 641px)" />
+    <!-- caminhos relativos ao documento: funcionam em qualquer pasta da hospedagem -->
+    <style>
+      @font-face {
+        font-family: 'Product Sans';
+        src: url(assets/fonts/product-sans.ttf) format('truetype');
+        font-weight: 300 700;
+        font-style: normal;
+        font-display: swap;
+      }
+      .hero::after { background-image: url(assets/hero-pc.webp); }
+      @media (max-width: 1440px) { .hero::after { background-image: url(assets/hero-pc-1440.webp); } }
+      @media (max-width: 640px) { .hero::after { background-image: url(assets/hero-mobile.webp); } }
+    </style>
+  </head>
+  <body>
+    <div id="root"></div>
+    <script type="module" src="/src/main.jsx"></script>
+  </body>
+</html>
