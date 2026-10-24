@@ -1,10 +1,32 @@
 import Header from './Header'
 import { AnchorLink, CtaToForm } from './Cta'
+import { IconTrend } from './Icons'
 
 // Mesmo hero do arquivo base: foto em tela cheia, texto enxuto à esquerda (no celular, embaixo e centralizado).
 export default function Hero() {
   return (
-    <section className="hero" id="top" aria-labelledby="hero-title">
+    <section className="hero" id="top" aria-labelledby="hero-title" data-anim>
+      <div className="hero-fx" aria-hidden="true">
+        {Array.from({ length: 8 }, (_, i) => (
+          <span className="hero-spark" key={i} style={{ '--i': i }} />
+        ))}
+        <div className="hero-badges">
+          <div className="hero-badge hero-badge--money">
+            <span className="hero-badge-ico">
+              <IconTrend size={16} />
+            </span>
+            <span>
+              <b>+R$ 100 mil</b>
+              <small>gerenciados em tráfego pago</small>
+            </span>
+          </div>
+          <div className="hero-badge hero-badge--live">
+            <i />
+            Campanhas no ar
+          </div>
+        </div>
+      </div>
+
       <Header />
       <div className="hero-copy">
         <h1 id="hero-title">

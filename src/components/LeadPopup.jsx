@@ -147,7 +147,13 @@ export default function LeadPopup() {
             </span>
             <h3>Falta só um passo, {firstName}!</h3>
             <p>Toque no botão abaixo para enviar suas respostas pelo WhatsApp e agendarmos o seu diagnóstico.</p>
-            <a className="cta-btn cta-primary lp-main" href={waLink(leadMessage(data))} target="_blank" rel="noopener noreferrer">
+            <a
+              className="cta-btn cta-primary lp-main"
+              href={waLink(leadMessage(data))}
+              target="_blank"
+              rel="noopener noreferrer"
+              onClick={() => setTimeout(() => goToThanks(data.nome), 400)}
+            >
               <span className="cta-fill" aria-hidden="true" />
               <span className="cta-label">Enviar pelo WhatsApp</span>
               <span className="cta-chip" aria-hidden="true">

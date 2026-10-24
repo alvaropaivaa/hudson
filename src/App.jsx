@@ -24,7 +24,6 @@ function useScrollMotion() {
 
     const ctx = gsap.context(() => {
       gsap.from('.hero-copy > *', { y: 30, opacity: 0, duration: 1, ease: 'power3.out', stagger: 0.09, delay: 0.15 })
-      gsap.from('.hero', { '--hero-zoom': 1.08, duration: 1.6, ease: 'power2.out' })
 
       gsap.utils.toArray('[data-reveal]').forEach((el) => {
         gsap.from(el, {
