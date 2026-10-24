@@ -8,6 +8,7 @@ import Diagnostico from './components/Diagnostico'
 import { FloatingBar, Footer } from './components/Footer'
 import LeadPopup from './components/LeadPopup'
 import { prefersReducedMotion } from './hooks'
+import { guard } from './protect'
 
 gsap.registerPlugin(ScrollTrigger)
 
@@ -138,6 +139,11 @@ function usePauseOffscreen() {
 }
 
 export default function App() {
+  // segunda checagem do domínio (se alguém tirar a primeira do main.jsx numa cópia)
+  useEffect(() => {
+    const t = setTimeout(guard, 2500)
+    return () => clearTimeout(t)
+  }, [])
   useScrollMotion()
   usePrefetch3D()
   usePauseOffscreen()

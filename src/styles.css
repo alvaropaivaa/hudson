@@ -35,6 +35,24 @@ main {
   overflow-x: clip;
 }
 
+/* proteção contra cópia: sem selecionar texto nem arrastar imagens (campos continuam normais) */
+body {
+  -webkit-user-select: none;
+  user-select: none;
+  -webkit-touch-callout: none;
+}
+
+input,
+textarea,
+select {
+  -webkit-user-select: text;
+  user-select: text;
+}
+
+img {
+  -webkit-user-drag: none;
+}
+
 img {
   display: block;
   max-width: 100%;
