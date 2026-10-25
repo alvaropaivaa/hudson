@@ -1,7 +1,7 @@
 import { Brand } from './Header'
 import { CtaButton } from './Cta'
 import { IconCheck, IconWhatsApp } from './Icons'
-import { SITE, waLink } from '../config'
+import { CREDITO, SITE, waLink } from '../config'
 
 // Página de obrigado (/obrigado/): abre depois que o contato foi salvo na planilha.
 // O primeiro nome chega pela URL (?nome=Maria) só para personalizar o título.
@@ -79,6 +79,9 @@ export default function Obrigado() {
 
       <footer className="ty-foot">
         {new Date().getFullYear()} © {SITE.nome}. {SITE.cargo}
+        <a className="footer-credit" href={CREDITO.link} target="_blank" rel="noopener noreferrer">
+          Feito por <strong>{CREDITO.nome}</strong>
+        </a>
       </footer>
     </div>
   )

@@ -2241,6 +2241,43 @@ section {
   background: #00000017;
 }
 
+/* crédito do desenvolvedor no rodapé */
+.footer-credit {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  color: #00000080;
+  font-size: 0.85rem;
+  transition: color 0.2s;
+}
+
+.footer-credit strong {
+  color: #111;
+  font-weight: 600;
+}
+
+.footer-credit:hover,
+.footer-credit:hover strong {
+  color: var(--violet);
+}
+
+.ty-foot {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+}
+
+.ty-foot .footer-credit,
+.ty-foot .footer-credit strong {
+  color: #ffffff8c;
+}
+
+.ty-foot .footer-credit:hover,
+.ty-foot .footer-credit:hover strong {
+  color: var(--violet-light);
+}
+
 /* ---------- Barra flutuante (base) ---------- */
 .floating-bar {
   position: fixed;

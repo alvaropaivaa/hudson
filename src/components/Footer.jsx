@@ -1,8 +1,8 @@
 import { useEffect, useState } from 'react'
 import { Brand } from './Header'
 import { AnchorLink, CtaButton } from './Cta'
-import { IconArrowUp, IconInstagram } from './Icons'
-import { SITE, waLink } from '../config'
+import { IconArrowUp, IconArrowUpRight, IconInstagram } from './Icons'
+import { CREDITO, SITE, waLink } from '../config'
 
 export function Footer() {
   return (
@@ -26,6 +26,10 @@ export function Footer() {
         </div>
         <div className="footer-bottom">
           <p>{new Date().getFullYear()} © {SITE.nome}. Todos os direitos reservados.</p>
+          <a className="footer-credit" href={CREDITO.link} target="_blank" rel="noopener noreferrer">
+            Feito por <strong>{CREDITO.nome}</strong>
+            <IconArrowUpRight size={14} />
+          </a>
           <div className="footer-actions">
             {SITE.instagram && (
               <a

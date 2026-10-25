@@ -15,6 +15,12 @@ export const SITE = {
 export const waLink = (msg = SITE.mensagemPadrao) =>
   `https://wa.me/${SITE.whatsapp}?text=${encodeURIComponent(msg)}`
 
+// Crédito no rodapé: leva para o WhatsApp do desenvolvedor (+55 85 8570-3272)
+export const CREDITO = {
+  nome: 'Alvaro Paiva Dev',
+  link: `https://wa.me/558585703272?text=${encodeURIComponent('Olá! Vim pelo parceiro Jonh e queria um orçamento de uma LP.')}`,
+}
+
 export const scrollToId = (id) => {
   const el = document.getElementById(id)
   if (!el) return
