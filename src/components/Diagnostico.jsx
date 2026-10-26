@@ -21,7 +21,7 @@ export default function Diagnostico() {
     setSending(true)
     // "site" é um campo invisível: só robô preenche (o servidor descarta)
     const ok = await sendLead({ ...form, origem: 'Formulário', site: e.currentTarget?.site?.value || '' })
-    if (ok) return goToThanks(form.nome)
+    if (ok) return goToThanks(form.nome, 'Formulário')
     setSending(false)
     setFallback(true)
   }
@@ -78,7 +78,7 @@ export default function Diagnostico() {
                 href={waLink(leadMessage(form))}
                 target="_blank"
                 rel="noopener noreferrer"
-                onClick={() => setTimeout(() => goToThanks(form.nome), 400)}
+                onClick={() => setTimeout(() => goToThanks(form.nome, 'Formulário'), 400)}
               >
                 <span className="cta-fill" aria-hidden="true" />
                 <span className="cta-label">Enviar pelo WhatsApp</span>

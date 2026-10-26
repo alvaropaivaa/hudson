@@ -47,8 +47,15 @@ export async function sendLead(data) {
 
 // Depois de salvar na planilha, leva para a página de obrigado (/obrigado/), que também serve
 // para marcar conversão no Pixel/Google Ads. O primeiro nome vai na URL só para personalizar.
-export const goToThanks = (nome) =>
+// Antes de sair, avisa o Google Tag Manager (evento "lead_enviado") para gatilhos de conversão.
+export const goToThanks = (nome, origem) => {
+  try {
+    ;(window.dataLayer = window.dataLayer || []).push({ event: 'lead_enviado', origem_formulario: origem })
+  } catch {
+    /* sem GTM: segue normal */
+  }
   window.location.assign(`obrigado/?nome=${encodeURIComponent(nome.trim().split(/\s+/)[0] || '')}`)
+}
 
 export const leadMessage = ({ nome, whats, empresa, investimento }) =>
   [

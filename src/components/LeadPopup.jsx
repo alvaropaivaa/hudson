@@ -106,7 +106,7 @@ export default function LeadPopup() {
     setSending(true)
     const ok = await sendLead({ ...data, origem: 'Pop-up' })
     // salvou: página de obrigado. Não salvou: plano B, o cliente envia pelo WhatsApp dele
-    if (ok) return goToThanks(data.nome)
+    if (ok) return goToThanks(data.nome, 'Pop-up')
     setSending(false)
     setStep(STEPS.length)
   }
@@ -152,7 +152,7 @@ export default function LeadPopup() {
               href={waLink(leadMessage(data))}
               target="_blank"
               rel="noopener noreferrer"
-              onClick={() => setTimeout(() => goToThanks(data.nome), 400)}
+              onClick={() => setTimeout(() => goToThanks(data.nome, 'Pop-up'), 400)}
             >
               <span className="cta-fill" aria-hidden="true" />
               <span className="cta-label">Enviar pelo WhatsApp</span>
